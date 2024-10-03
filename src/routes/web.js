@@ -1,5 +1,6 @@
 import express from "express";
 import homeController from '../controller/homeController';
+import { checkUserJWT } from "../middleware/JWTActions";
 
 const router = express.Router();
 
@@ -9,6 +10,9 @@ const router = express.Router();
  */
 
 const initWebRoutes = (app) => {
+
+    router.all('*', checkUserJWT)
+
     router.get("/", (req, res) => {
         return res.send("Hello world with Eric & HoiDanIT")
     })
@@ -18,6 +22,7 @@ const initWebRoutes = (app) => {
         })
     })
     router.post("/get-data-by-url", homeController.getDataByURL);
+
     return app.use("/", router);
 }
 
